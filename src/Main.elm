@@ -202,13 +202,15 @@ regexOutputView model =
 -- HELPERS
 
 
-renderMaybe : (a -> String) -> Maybe a -> Value
-renderMaybe toStr ma =
-    Encode.string <|
-        (ma
-            |> Maybe.map
-                ((++) "Just " << toStr)
-            |> Maybe.withDefault "Nothing"
+renderMaybeAsArray : (a -> Value) -> Maybe a -> Value
+renderMaybeAsArray toValue ma =
+    Encode.list toValue
+        (case ma of
+            Just x ->
+                [x]
+
+            Nothing ->
+                []
         )
 
 
@@ -220,7 +222,7 @@ matchToValue match =
         , ( "number", Encode.int match.number )
         , ( "submatches"
           , Encode.list
-                (renderMaybe identity)
+                (renderMaybeAsArray Encode.string)
                 match.submatches
           )
         ]
