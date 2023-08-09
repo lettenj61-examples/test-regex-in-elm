@@ -1,4 +1,10 @@
 {
   "name": "@lettenj61/test-regex-in-elm",
-  "private": true
+  "private": true,
+  "scripts": {
+    "build": "elm make --optimize --output dist/elm.js src/Main.elm"
+  },
+  "volta": {
+    "node": "20.5.0"
+  }
 }
